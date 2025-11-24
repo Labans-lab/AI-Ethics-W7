@@ -1,18 +1,18 @@
-🌍⚖️ AI Ethics Assignment
+**🌍⚖️ AI Ethics Assignment**
 Theme: Designing Responsible and Fair AI Systems
 📌 Overview
 
 This assignment evaluates your understanding of ethical AI principles, identifying and mitigating biases, and applying ethics to real-world AI scenarios. It includes theory, case study analysis, a fairness audit using Python + AIF360, and a reflective section.
 
-📖 Table of Contents
+**📖 Table of Contents**
 
-Part 1: Theoretical Understanding (30%)
+**Part 1: Theoretical Understanding**
 
-Part 2: Case Study Analysis (40%)
+**Part 2: Case Study Analysis**
 
-Part 3: Practical Audit (25%)
+**Part 3: Practical Audit**
 
-Part 4: Ethical Reflection (5%)
+**Part 4: Ethical Reflection**
 
 Bonus Task: Policy Proposal – Ethical AI in Healthcare
 
@@ -20,8 +20,8 @@ Tools & Resources
 
 Submission Details
 
-Part 1: Theoretical Understanding (30%)
-Q1: Define algorithmic bias and provide two examples.
+**Part 1: Theoretical Understanding**
+**Q1: Define algorithmic bias and provide two examples.**
 
 Algorithmic bias occurs when an AI system produces unfair or unequal outcomes because of skewed data, flawed model design, or systemic societal biases encoded in the dataset.
 
@@ -31,7 +31,7 @@ Hiring algorithms favoring male candidates because training data was dominated b
 
 Facial recognition systems misidentifying darker-skinned individuals due to lack of diverse training data.
 
-Q2: Difference between Transparency and Explainability. Why both matter?
+**Q2: Difference between Transparency and Explainability. Why both matter?**
 
 Transparency refers to openness about how an AI system is built—its data sources, algorithms, limitations, and decision processes.
 
@@ -40,7 +40,7 @@ Explainability means making individual AI decisions understandable to humans (e.
 Importance:
 Both ensure trust, accountability, user empowerment, and compliance with regulations. Transparency helps detect systemic issues, while explainability helps individuals understand decisions affecting them.
 
-Q3: How GDPR impacts AI development in the EU
+**Q3: How GDPR impacts AI development in the EU**
 
 GDPR enforces:
 
@@ -60,8 +60,8 @@ A) Justice	Fair distribution of AI benefits and risks.
 B) Non-maleficence	Ensuring AI does not harm individuals or society.
 C) Autonomy	Respecting users’ right to control their data and decisions.
 D) Sustainability	Designing AI to be environmentally friendly.
-Part 2: Case Study Analysis (40%)
-Case 1: Biased Hiring Tool — Amazon
+**Part 2: Case Study Analysis**
+**Case 1: Biased Hiring Tool — Amazon**
 Source of Bias
 
 Training data: Historically male-dominated tech workforce → model learned to penalize CVs containing female-associated keywords.
@@ -88,8 +88,8 @@ False Positive Rate (FPR) difference
 
 Demographic parity difference
 
-Case 2: Facial Recognition in Policing
-Ethical Risks
+**Case 2: Facial Recognition in Policing
+Ethical Risks**
 
 Wrongful arrests due to misidentification.
 
@@ -99,7 +99,7 @@ Increased surveillance of minorities.
 
 Reinforcement of systemic discrimination.
 
-Recommended Policies
+**Recommended Policies**
 
 Independent bias audits before deployment.
 
@@ -111,40 +111,51 @@ Community consultation before rollout.
 
 Limit use to serious crimes — avoid mass surveillance.
 
-Part 3: Practical Audit (25%)
+**Part 3: Practical Audit (25%)**
 Bias Audit on COMPAS Dataset using AIF360
 ✔️ Python Code Example (Simplified)
+```
 from aif360.datasets import CompasDataset
 from aif360.metrics import BinaryLabelDatasetMetric, ClassificationMetric
 from aif360.algorithms.preprocessing import Reweighing
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
-
+```
 # Load dataset
+```
 dataset = CompasDataset()
+```
 
 # Protected attribute: race
+```
 protected = dataset.protected_attribute_names[0]
-
+```
 # Original metrics
+```
 metric = BinaryLabelDatasetMetric(dataset, 
                                   privileged_groups=[{protected: 1}],
                                   unprivileged_groups=[{protected: 0}])
 
 print("Disparate Impact:", metric.disparate_impact())
-
+```
 # Visualization: Disparate Impact
+```
 plt.bar(["Disparate Impact"], [metric.disparate_impact()])
 plt.title("Disparate Impact Ratio (Original)")
 plt.show()
+```
+<img width="1175" height="692" alt="Screenshot 2025-11-24 091132" src="https://github.com/user-attachments/assets/083dfa58-a76a-4ce8-bede-b9daee73c85b" />
+
 
 # Mitigation: Reweighing
+```
 RW = Reweighing(unprivileged_groups=[{protected: 0}],
                 privileged_groups=[{protected: 1}])
 dataset_transformed = RW.fit_transform(dataset)
-
+```
 # Train model
+```
 X_train = dataset_transformed.features
 y_train = dataset_transformed.labels.ravel()
 
@@ -153,8 +164,10 @@ clf.fit(X_train, y_train)
 preds = clf.predict(X_train)
 
 print("Accuracy:", accuracy_score(y_train, preds))
+```
+<img width="560" height="335" alt="Screenshot 2025-11-24 092841" src="https://github.com/user-attachments/assets/2f374d10-353c-4bb3-9088-c82e5def4e96" />
 
-300-Word Audit Summary
+**300-Word Audit Summary**
 
 The COMPAS recidivism dataset has been widely criticized for racial bias, particularly in assigning higher risk scores to Black defendants. Using AIF360, I conducted a fairness audit comparing outcomes between privileged (Caucasian) and unprivileged (African American) groups. The initial disparate impact ratio was significantly below 0.8, indicating strong adverse impact against minority groups. Additional metrics, such as false positive rate differences, revealed that African American individuals were more likely to be incorrectly labeled as “high risk” compared to Caucasian individuals. This confirms the presence of structural bias in the dataset and traditional machine learning workflows.
 
@@ -170,7 +183,7 @@ Post-processing calibration such as equalized odds.
 
 Ultimately, fairness cannot rely solely on technical methods. It requires transparent reporting, continuous monitoring, and policy-level oversight.
 
-Part 4: Ethical Reflection (5%)
+**Part 4: Ethical Reflection (5%)**
 
 For any future AI project I build (e.g., AI nutrition recommender or TEXT2POTAI), I will ensure ethical integrity by:
 
@@ -184,7 +197,7 @@ Ensuring user autonomy through clear consent mechanisms.
 
 Prioritizing safety and non-harm.
 
-Bonus Task: Policy Proposal — Ethical AI in Healthcare (Extra 10%)
+**Bonus Task: Policy Proposal — Ethical AI in Healthcare**
 1-Page Guideline: Ethical AI Use in Healthcare
 1. Patient Consent Protocols
 
@@ -212,7 +225,7 @@ Document all model updates and data sources.
 
 Report error rates by demographic group.
 
-Tools & Resources
+**Tools & Resources**
 
 AI Fairness 360 (AIF360)
 
